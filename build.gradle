@@ -26,7 +26,7 @@ task clean(type: Delete) {
 }
 
 
-ext{
+ext {
     //dependencies
     guavaVersion = '18.0'
 
@@ -44,5 +44,12 @@ ext{
     retrofitVersion = "2.1.0"
     okhttpVersion = "3.5.0"
     picassoVersion = "2.5.2"
+
+    // test  dependencies
+    junitVersion = '4.12'
+    espressoVersion = '2.2.1'
+
+    mockitoCoreVersion = "1.10.19"
+    dexmakerMockitoVersion = "1.1"
 
 }

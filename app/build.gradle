@@ -4,7 +4,7 @@ apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.tubic.testapp"
         minSdkVersion 16
@@ -26,6 +26,15 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    productFlavors {
+        prod {
+
+        }
+        mock {
+            applicationIdSuffix = ".mock"
+        }
+    }
 }
 retrolambda {
     defaultMethods false
@@ -34,6 +43,12 @@ retrolambda {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+    compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-io
+    compile group: 'org.apache.commons', name: 'commons-io', version: '1.3.2'
 
     //guava
     compile "com.google.guava:guava:$rootProject.guavaVersion"
@@ -46,6 +61,10 @@ dependencies {
     apt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     provided 'javax.annotation:jsr250-api:1.0'
 
+    // rx
+    compile "io.reactivex:rxandroid:$rootProject.ext.rxVersion"
+    compile "io.reactivex:rxjava:$rootProject.ext.rxVersion"
+
     // retrofit & http
     compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
@@ -56,10 +75,23 @@ dependencies {
     // facebook
     compile "com.facebook.android:facebook-android-sdk:$rootProject.ext.facebookVersion"
 
+    // test
+    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-contrib:$rootProject.ext.espressoVersion"
 
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    testCompile 'junit:junit:4.12'
+    androidTestCompile "org.mockito:mockito-core:$rootProject.ext.mockitoCoreVersion"
+    androidTestCompile "com.google.dexmaker:dexmaker-mockito:$rootProject.ext.dexmakerMockitoVersion"
+
+    compile "com.android.support.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
+
+    testCompile "junit:junit:$rootProject.ext.junitVersion"
+    testCompile "org.mockito:mockito-core:$rootProject.ext.mockitoCoreVersion"
+
+    // Resolve conflicts between main and test APK:
+    androidTestCompile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
+    androidTestCompile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    androidTestCompile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    androidTestCompile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    androidTestCompile "com.android.support:design:$rootProject.supportLibraryVersion"
 }

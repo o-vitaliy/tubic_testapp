@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.tubic.testapp.favorites.FavoritesFragment;
 import com.tubic.testapp.fb.FacebookFragment;
-import com.tubic.testapp.search.GoogleSearchFragment;
+import com.tubic.testapp.google.GoogleSearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
