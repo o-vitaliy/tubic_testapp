@@ -7,6 +7,9 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
 
+        classpath 'me.tatarka:gradle-retrolambda:3.4.0'
+
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -20,4 +23,26 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+
+ext{
+    //dependencies
+    guavaVersion = '18.0'
+
+    supportLibraryVersion = '25.0.1'
+
+    daggerVersion = '2.8'
+
+    facebookVersion = '[4,5)'
+
+    gsonVersion = "2.4"
+
+    rxVersion = "1.2.1"
+    rxBindingVersion = "1.0.0"
+
+    retrofitVersion = "2.1.0"
+    okhttpVersion = "3.5.0"
+    picassoVersion = "2.5.2"
+
 }

@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 25
@@ -17,10 +19,44 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+retrolambda {
+    defaultMethods false
+    incremental true
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    //guava
+    compile "com.google.guava:guava:$rootProject.guavaVersion"
+
+    //picasso - image loader util
+    compile "com.squareup.picasso:picasso:$rootProject.ext.picassoVersion"
+
+    // dagger
+    compile "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
+    apt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
+    provided 'javax.annotation:jsr250-api:1.0'
+
+    // retrofit & http
+    compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
+    compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.ext.retrofitVersion"
+    compile "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion"
+    compile "com.squareup.okhttp3:okhttp-urlconnection:$rootProject.ext.okhttpVersion"
+
+    // facebook
+    compile "com.facebook.android:facebook-android-sdk:$rootProject.ext.facebookVersion"
+
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
