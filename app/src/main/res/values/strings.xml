@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">TestApp</string>
+    <string name="favorites">Favorites</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
 </resources>
