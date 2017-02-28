@@ -1,16 +1,27 @@
 package com.tubic.testapp.google;
 
-import com.tubic.testapp.BasePresenter;
-import com.tubic.testapp.BaseView;
+import com.tubic.testapp.BaseSearchPresenter;
+import com.tubic.testapp.BaseSearchView;
+import com.tubic.testapp.common.State;
 
-public interface GoogleSearchContract {
+interface GoogleSearchContract {
 
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseSearchView<Presenter> {
+
+        void notifyRefreshingComplete();
+
+        int getVisibleItem();
+
+        void setVisibleItem(int offset);
     }
 
-    abstract class Presenter extends BasePresenter {
+    abstract class Presenter extends BaseSearchPresenter {
 
-        abstract void loadNextPage(String query);
+        abstract void search(String query);
+
+        abstract State getSaveState();
+
+        abstract void restoreSaveState(State state);
 
     }
 

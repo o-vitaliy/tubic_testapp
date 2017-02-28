@@ -1,6 +1,13 @@
 package com.tubic.testapp.google;
 
+import com.google.common.base.Strings;
+import com.tubic.testapp.common.Pagination;
+import com.tubic.testapp.common.State;
+import com.tubic.testapp.data.Image;
 import com.tubic.testapp.data.source.GoogleSearchRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -15,6 +22,12 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
+    private String query;
+
+    private Pagination pagination;
+
+    private List<Image> images = new ArrayList<>();
+
     @Inject
     GoogleSearchPresenter(GoogleSearchContract.View view, GoogleSearchRepository googleSearchRepository) {
         this.view = view;
@@ -22,20 +35,79 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
     }
 
     @Inject
-    protected void start() {
+    protected final void start() {
     }
 
     @Override
-    void loadNextPage(String q) {
-        Subscription subscription = config(googleSearchRepository.getFavoriteImage(q, 0))
+    void search(String query) {
+        this.query = Strings.emptyToNull(query);
+
+        refresh();
+    }
+
+    @Override
+    protected void refresh() {
+        compositeSubscription.clear();
+        pagination = new Pagination();
+        view.refresh();
+        if (this.query != null) {
+            loadNextPage();
+        } else {
+            view.notifyRefreshingComplete();
+        }
+    }
+
+    @Override
+    protected final void loadNextPage() {
+        if (pagination.isLoading())
+            return;
+        Subscription subscription = config(googleSearchRepository.getFavoriteImage(query, (int) pagination.getCurrentOffset()))
+                .doOnTerminate(view::notifyRefreshingComplete)
                 .subscribe(
-                        result -> System.out.println(result),
+                        result -> {
+                            System.out.println(result);
+                            if (result == null || images.size() + result.size() == 0) {
+                                view.showSearchNoResults();
+                            } else {
+                                int count = images.size();
+                                images.addAll(result);
+                                view.showSearchResults(images, count, result.size());
+                            }
+                        },
                         error -> view.onError(error.getMessage())
                 );
+
+        compositeSubscription.add(subscription);
     }
 
     @Override
-    protected void stop() {
+    State getSaveState() {
+        return new GoogleSearchState.Builder()
+                .setQuery(query)
+                .setItems(images)
+                .setItemOffset(view.getVisibleItem())
+                .setPaginationOffset(pagination != null ? (int) pagination.getCurrentOffset() : 0)
+                .build();
+
+    }
+
+    @Override
+    void restoreSaveState(State state) {
+        GoogleSearchState googleSearchState = (GoogleSearchState) state;
+        query = googleSearchState.getQuery();
+        pagination = new Pagination();
+        pagination.setCurrentOffset(googleSearchState.getPaginationOffset());
+        images = googleSearchState.getImages();
+
+        if (images.size() > 0) {
+            view.showSearchResults(images, 0, images.size());
+            view.setVisibleItem(googleSearchState.getItemOffset());
+        }
+
+    }
+
+    @Override
+    protected final void stop() {
         compositeSubscription.unsubscribe();
     }
 }

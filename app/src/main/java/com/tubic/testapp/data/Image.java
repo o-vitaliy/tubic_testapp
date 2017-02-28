@@ -2,6 +2,8 @@ package com.tubic.testapp.data;
 
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
@@ -9,7 +11,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  * Created by ovitaliy on 27.02.2017.
  */
 
-public class Image {
+public class Image implements Serializable {
 
     private long id;
 
