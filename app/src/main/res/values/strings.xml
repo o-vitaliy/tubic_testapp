@@ -3,4 +3,6 @@
     <string name="favorites">Favorites</string>
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
+    <string name="log_out">Log out</string>
+    <string name="login_with_facebook">Log In with Facebook</string>
 </resources>
