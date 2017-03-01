@@ -110,7 +110,7 @@ public class FavoriteImagesProvider extends ContentProvider {
             case FAVORITE:
                 long _id = db.insert(ImagesPersistenceContract.ImageEntry.TABLE_NAME, null, values);
                 if (_id > 0) {
-                    returnUri = ImagesPersistenceContract.ImageEntry.buildTasksUriWith(_id);
+                    returnUri = ImagesPersistenceContract.ImageEntry.buildUriWith(_id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }

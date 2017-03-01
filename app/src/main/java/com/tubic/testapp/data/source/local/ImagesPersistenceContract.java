@@ -51,18 +51,18 @@ public final class ImagesPersistenceContract {
         public static final String COLUMN_NAME_PATH = "path";
         public static final String COLUMN_NAME_LOCALPATH = "favorites";
         public static final Uri CONTENT_TASK_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
-        public static String[] TASKS_COLUMNS = new String[]{
+        public static String[] COLUMNS = new String[]{
                 ImageEntry._ID,
                 ImageEntry.COLUMN_NAME_PATH,
                 ImageEntry.COLUMN_NAME_LOCALPATH
         };
 
-        public static Uri buildTasksUriWith(long id) {
+        public static Uri buildUriWith(long id) {
             return ContentUris.withAppendedId(CONTENT_TASK_URI, id);
         }
 
-        public static Uri buildTasksUriWith(String id) {
-            Uri uri = CONTENT_TASK_URI.buildUpon().appendPath(id).build();
+        public static Uri buildUriWithPath(String path) {
+            Uri uri = CONTENT_TASK_URI.buildUpon().appendPath(path).build();
             return uri;
         }
 

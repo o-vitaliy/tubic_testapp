@@ -11,6 +11,7 @@ import com.tubic.testapp.data.source.FavoritesDataSource;
 import com.tubic.testapp.data.source.GoogleSearchRemoteDataSource;
 import com.tubic.testapp.data.source.ImageCacheDataSource;
 import com.tubic.testapp.data.source.ImageCacheDataSourceImpl;
+import com.tubic.testapp.data.source.LoaderProvider;
 import com.tubic.testapp.data.source.local.FavoritesDataSourceImpl;
 
 import java.io.File;
@@ -25,6 +26,14 @@ import dagger.Provides;
  */
 @Module
 final public class DataSourceModule {
+
+
+    @Singleton
+    @Provides
+    @NonNull
+    LoaderProvider provideLoaderProvider(Context context) {
+        return new LoaderProvider(context);
+    }
 
     @Singleton
     @Provides
