@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.tubic.testapp.R;
 import com.tubic.testapp.data.Image;
+import com.tubic.testapp.item.ImageViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;

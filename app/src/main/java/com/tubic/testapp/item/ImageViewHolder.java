@@ -1,4 +1,4 @@
-package com.tubic.testapp.common;
+package com.tubic.testapp.item;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

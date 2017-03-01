@@ -7,6 +7,8 @@ import com.tubic.testapp.data.source.FacebookRepository;
 import com.tubic.testapp.data.source.FavoritesDataSource;
 import com.tubic.testapp.data.source.GoogleSearchRemoteDataSource;
 import com.tubic.testapp.data.source.GoogleSearchRepository;
+import com.tubic.testapp.data.source.ImageCacheDataSource;
+import com.tubic.testapp.item.ImageRepository;
 
 import javax.inject.Singleton;
 
@@ -30,5 +32,12 @@ public class RepositoriesModule {
     @NonNull
     public FacebookRepository provideFacebookRepository(FacebookDataSource facebookDataSource, FavoritesDataSource favoritesDataSource) {
         return new FacebookRepository(facebookDataSource, favoritesDataSource);
+    }
+
+    @Singleton
+    @Provides
+    @NonNull
+    public ImageRepository imageRepository(ImageCacheDataSource imageCacheDataSource, FavoritesDataSource favoritesDataSource) {
+        return new ImageRepository(imageCacheDataSource, favoritesDataSource);
     }
 }
