@@ -2,6 +2,7 @@ package com.tubic.testapp.fb;
 
 import com.tubic.testapp.BaseSearchPresenter;
 import com.tubic.testapp.BaseSearchView;
+import com.tubic.testapp.common.RecyclerViewClickListener;
 import com.tubic.testapp.common.State;
 
 interface FacebookContract {
@@ -20,6 +21,7 @@ interface FacebookContract {
     }
 
     abstract class Presenter extends BaseSearchPresenter {
+
 
         abstract State getSaveState();
 

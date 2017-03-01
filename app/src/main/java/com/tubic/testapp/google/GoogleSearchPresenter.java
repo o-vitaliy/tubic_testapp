@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -94,7 +95,6 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
                 .setItemOffset(view.getVisibleItem())
                 .setPaginationOffset(pagination != null ? (int) pagination.getCurrentOffset() : 0)
                 .build();
-
     }
 
     @Override
@@ -109,7 +109,39 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
             view.showSearchResults(images, 0, images.size());
             view.setVisibleItem(googleSearchState.getItemOffset());
         }
+    }
 
+    @Override
+    protected void makeFavoriteUnFavorite(int position, String link) {
+        Image image = images.get(position);
+
+        Observable<String> action = image.isFavorites()
+                ? googleSearchRepository.deleteFromCahche(link)
+                : googleSearchRepository.addToCache(link);
+
+        Subscription subscription = config(action)
+                .subscribe(
+                        localLink -> {
+                            images.get(position).setLocalLink(localLink);
+                            view.notifyItemChangedAtPosition(position);
+                        },
+                        error -> view.onError(error.getMessage())
+                );
+
+        compositeSubscription.add(subscription);
+    }
+
+    @Override
+    protected void validateFavorite(int position, String link) {
+        Image image = images.get(position);
+        Subscription subscription = config(googleSearchRepository.getCacheLink(image.getRemoteLink()))
+                .subscribe(
+                        localLink -> {
+                            images.get(position).setLocalLink(localLink);
+                            view.notifyItemChangedAtPosition(position);
+                        },
+                        error -> view.onError(error.getMessage())
+                );
     }
 
     @Override

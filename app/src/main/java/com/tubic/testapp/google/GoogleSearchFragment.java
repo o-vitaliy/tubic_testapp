@@ -16,6 +16,7 @@ import com.tubic.testapp.R;
 import com.tubic.testapp.common.BaseFragment;
 import com.tubic.testapp.common.ImagesAdapter;
 import com.tubic.testapp.common.LayoutManagerHelper;
+import com.tubic.testapp.common.RecyclerViewClickListener;
 import com.tubic.testapp.common.RecyclerViewScrollListener;
 import com.tubic.testapp.common.State;
 import com.tubic.testapp.data.Image;
@@ -60,7 +61,7 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        imagesAdapter = new ImagesAdapter();
+        imagesAdapter = new ImagesAdapter(viewItemClickListener, favoriteItemClickListener);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.google_list);
         recyclerView.setLayoutManager(LayoutManagerHelper.getLayoutManager(getContext()));
@@ -72,6 +73,11 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.google_main);
         swipeRefreshLayout.setOnRefreshListener(() -> googleSearchPresenter.refresh());
     }
+
+    private final RecyclerViewClickListener<String> viewItemClickListener = ((value, position) -> {
+        System.out.println(value);
+    });
+    private final RecyclerViewClickListener<String> favoriteItemClickListener = ((value, position) -> googleSearchPresenter.makeFavoriteUnFavorite(position, value));
 
     @Override
     public void refresh() {
@@ -85,6 +91,11 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
     @Override
     public void notifyRefreshingComplete() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void notifyItemChangedAtPosition(int position) {
+        imagesAdapter.notifyItemChanged(position);
     }
 
     @Override

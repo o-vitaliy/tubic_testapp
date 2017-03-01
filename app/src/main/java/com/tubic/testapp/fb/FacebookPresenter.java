@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -117,7 +118,40 @@ class FacebookPresenter extends FacebookContract.Presenter {
             view.showSearchResults(images, 0, images.size());
             view.setVisibleItem(state.getItemOffset());
         }
+    }
 
+
+    @Override
+    protected void makeFavoriteUnFavorite(int position, String link) {
+        Image image = images.get(position);
+
+        Observable<String> action = image.isFavorites()
+                ? facebookRepository.deleteFromCahche(link)
+                : facebookRepository.addToCache(link);
+
+        Subscription subscription = config(action)
+                .subscribe(
+                        localLink -> {
+                            images.get(position).setLocalLink(localLink);
+                            view.notifyItemChangedAtPosition(position);
+                        },
+                        error -> view.onError(error.getMessage())
+                );
+
+        compositeSubscription.add(subscription);
+    }
+
+    @Override
+    protected void validateFavorite(int position, String link) {
+        Image image = images.get(position);
+        Subscription subscription = config(facebookRepository.getCacheLink(image.getRemoteLink()))
+                .subscribe(
+                        localLink -> {
+                            images.get(position).setLocalLink(localLink);
+                            view.notifyItemChangedAtPosition(position);
+                        },
+                        error -> view.onError(error.getMessage())
+                );
     }
 
     @Override

@@ -15,7 +15,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.tubic.testapp.R;
-import com.tubic.testapp.common.*;
+import com.tubic.testapp.common.BaseFragment;
+import com.tubic.testapp.common.ImagesAdapter;
+import com.tubic.testapp.common.LayoutManagerHelper;
+import com.tubic.testapp.common.RecyclerViewClickListener;
+import com.tubic.testapp.common.RecyclerViewScrollListener;
 import com.tubic.testapp.data.Image;
 
 import java.util.List;
@@ -62,7 +66,7 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
             });
         });
 
-        imagesAdapter = new ImagesAdapter();
+        imagesAdapter = new ImagesAdapter(viewItemClickListener, favoriteItemClickListener);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.facebook_list);
         recyclerView.setLayoutManager(LayoutManagerHelper.getLayoutManager(getContext()));
@@ -101,6 +105,14 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
     @Override
     public void setVisibleItem(int offset) {
         recyclerView.getLayoutManager().scrollToPosition(offset);
+    }
+
+    private final RecyclerViewClickListener<String> viewItemClickListener = ((value, position) -> System.out.println(value));
+    private final RecyclerViewClickListener<String> favoriteItemClickListener = ((value, position) -> facebookPresenter.makeFavoriteUnFavorite(position, value));
+
+    @Override
+    public void notifyItemChangedAtPosition(int position) {
+        imagesAdapter.notifyItemChanged(position);
     }
 
     @Override

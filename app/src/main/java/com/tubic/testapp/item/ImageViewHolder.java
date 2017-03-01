@@ -5,28 +5,42 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.tubic.testapp.App;
 import com.tubic.testapp.R;
+import com.tubic.testapp.common.RecyclerViewClickListener;
 import com.tubic.testapp.data.Image;
 
 /**
  * Created by ovitaliy on 28.02.2017.
  */
 
-public class ImageViewHolder extends RecyclerView.ViewHolder {
+public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private final ImageView imageView;
     private final ImageView likeButton;
 
+    private Image image;
 
-    public ImageViewHolder(View itemView) {
+    private final RecyclerViewClickListener<String> openImageClickListener;
+    private final RecyclerViewClickListener<String> favoritesClickListener;
+
+    public ImageViewHolder(View itemView, RecyclerViewClickListener<String> openImageClickListener, RecyclerViewClickListener<String> favoritesClickListener) {
         super(itemView);
+
+        this.openImageClickListener = openImageClickListener;
+        this.favoritesClickListener = favoritesClickListener;
 
         imageView = (ImageView) itemView.findViewById(R.id.item_image_image);
         likeButton = (ImageView) itemView.findViewById(R.id.item_item_favorite);
+
+        imageView.setOnClickListener(this);
+        likeButton.setOnClickListener(this);
     }
 
 
     public void setData(Image image) {
+        this.image = image;
+
         String link = image.isFavorites()
                 ? image.getLocalLink()
                 : image.getRemoteLink();
@@ -35,8 +49,23 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
                 .load(link)
                 .resize(480, 360)
                 .centerCrop()
+                .noFade()
                 .into(imageView);
 
         likeButton.setSelected(image.isFavorites());
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.item_image_image:
+                openImageClickListener.recyclerViewListClicked(image.getRemoteLink(), getAdapterPosition());
+                break;
+
+            case R.id.item_item_favorite:
+                likeButton.setSelected(!image.isFavorites());
+                favoritesClickListener.recyclerViewListClicked(image.getRemoteLink(), getAdapterPosition());
+                break;
+        }
     }
 }

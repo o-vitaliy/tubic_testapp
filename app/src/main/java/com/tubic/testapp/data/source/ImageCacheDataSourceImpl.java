@@ -37,6 +37,8 @@ public class ImageCacheDataSourceImpl implements ImageCacheDataSource {
             public void call(Subscriber<? super String> subscriber) {
 
                 String fileName = FilenameUtils.getName(remoteLink);
+                if (fileName.contains("?"))
+                    fileName = fileName.substring(0, fileName.indexOf("?"));
                 File resultFile = new File(cacheFolder, fileName);
                 FileOutputStream fileOutputStream = null;
                 try {
@@ -54,11 +56,10 @@ public class ImageCacheDataSourceImpl implements ImageCacheDataSource {
 
                     ResponseBody responseBody = response.body();
 
-
                     fileOutputStream = new FileOutputStream(resultFile);
                     IOUtils.copyLarge(responseBody.byteStream(), fileOutputStream);
 
-                    subscriber.onNext(fileName);
+                    subscriber.onNext("file://" + resultFile.getAbsolutePath());
                 } catch (Exception ex) {
                     subscriber.onError(ex);
                 } finally {
@@ -77,6 +78,7 @@ public class ImageCacheDataSourceImpl implements ImageCacheDataSource {
 
     @Override
     public Observable<Boolean> deleteImage(String localLink) {
-        return Observable.just(new File(cacheFolder, localLink).delete());
+        localLink = localLink.replace("file://", "");
+        return Observable.just(new File(localLink).delete());
     }
 }

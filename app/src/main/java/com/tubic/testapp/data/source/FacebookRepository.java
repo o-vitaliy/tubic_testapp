@@ -13,17 +13,15 @@ import rx.Observable;
  * Created by ovitaliy on 01.03.2017.
  */
 
-public class FacebookRepository {
+public class FacebookRepository extends ImageRepository {
 
     private static final int LIMIT = 2;
 
     private final FacebookDataSource facebookRemoteDataSource;
 
-    private final FavoritesDataSource favoritesDataSource;
-
-    public FacebookRepository(FacebookDataSource facebookRemoteDataSource, FavoritesDataSource favoritesDataSource) {
+    public FacebookRepository(ImageCacheDataSource imageCacheDataSource, FavoritesDataSource favoritesDataSource, FacebookDataSource facebookRemoteDataSource) {
+        super(imageCacheDataSource, favoritesDataSource);
         this.facebookRemoteDataSource = facebookRemoteDataSource;
-        this.favoritesDataSource = favoritesDataSource;
     }
 
     public Observable<Pair<String, List<Image>>> getImages(String after) {

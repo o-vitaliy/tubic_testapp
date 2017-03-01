@@ -9,7 +9,6 @@ import com.tubic.testapp.R;
 import com.tubic.testapp.data.Image;
 import com.tubic.testapp.item.ImageViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,12 +17,20 @@ import java.util.List;
 
 public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
-    private List<Image> images = new ArrayList<>();
+    private List<Image> images = null;
+
+    private final RecyclerViewClickListener<String> openImageClickListener;
+    private final RecyclerViewClickListener<String> favoritesClickListener;
+
+    public ImagesAdapter(RecyclerViewClickListener<String> openImageClickListener, RecyclerViewClickListener<String> favoritesClickListener) {
+        this.openImageClickListener = openImageClickListener;
+        this.favoritesClickListener = favoritesClickListener;
+    }
 
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_image, parent, false);
-        return new ImageViewHolder(view);
+        return new ImageViewHolder(view, openImageClickListener, favoritesClickListener);
     }
 
     @Override
@@ -32,8 +39,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     }
 
     public void clear() {
-        images.clear();
-        notifyDataSetChanged();
+        if (images != null) {
+            images.clear();
+            notifyDataSetChanged();
+        }
     }
 
     public void add(List<Image> list, int oldSize, int newItemsCount) {
@@ -43,7 +52,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
     @Override
     public int getItemCount() {
-        return images.size();
+        return images != null ? images.size() : 0;
     }
 
 

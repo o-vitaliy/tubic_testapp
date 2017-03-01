@@ -1,8 +1,13 @@
 package com.tubic.testapp.item;
 
+import com.google.common.base.Strings;
+import com.tubic.testapp.data.source.ImageRepository;
+
 import javax.inject.Inject;
 
 import rx.Observable;
+
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
  * Created by ovi on 01/03/17.
@@ -23,21 +28,21 @@ public class ImagePresenter extends ImageContract.Presenter {
 
     @Override
     void isFavorite(String link) {
-        config(imageRepository.isFavorites(link))
+        config(imageRepository.getCacheLink(link))
                 .subscribe(
-                        result -> view.setFavorite(result),
+                        result -> view.setFavorite(!isNullOrEmpty(result)),
                         error -> view.onError(error.getMessage())
                 );
     }
 
     @Override
     void invertFavoriteState(String link) {
-        Observable<Boolean> isFavoritesObservable = imageRepository.isFavorites(link);
+   //     Observable<Boolean> isFavoritesObservable = imageRepository.isFavorites(!);
 
 
-        isFavoritesObservable.flatMap(isFavorite -> {
-            if (isFavorite) return imageRepository.delete(link);
-            else return imageRepository.addToFavorites(link);
+ /*       isFavoritesObservable.flatMap(isFavorite -> {
+            if (isFavorite) return imageRepository.deleteFromCahche(link);
+            else return imageRepository.addToCache(link);
         });
 
         config(isFavoritesObservable).subscribe(
@@ -46,7 +51,7 @@ public class ImagePresenter extends ImageContract.Presenter {
                 },
                 error -> view.onError(error.getMessage())
         );
-
+*/
     }
 
     @Override

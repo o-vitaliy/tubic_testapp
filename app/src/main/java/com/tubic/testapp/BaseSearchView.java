@@ -16,4 +16,5 @@ public interface BaseSearchView<T extends BasePresenter> extends BaseView<T> {
 
     void showSearchResults(List<Image> images, int oldSize, int newItemsCount);
 
+    void notifyItemChangedAtPosition(int position);
 }

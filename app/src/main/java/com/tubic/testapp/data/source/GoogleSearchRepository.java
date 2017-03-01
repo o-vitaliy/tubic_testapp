@@ -11,19 +11,19 @@ import java.util.Map;
 
 import rx.Observable;
 
+import static dagger.internal.Preconditions.checkNotNull;
+
 /**
  * Created by ovitaliy on 27.02.2017.
  */
 
-public class GoogleSearchRepository {
+public class GoogleSearchRepository extends ImageRepository {
 
     private final GoogleSearchRemoteDataSource googleSearchRemoteDataSource;
 
-    private final FavoritesDataSource favoritesDataSource;
-
-    public GoogleSearchRepository(GoogleSearchRemoteDataSource googleSearchRemoteDataSource, FavoritesDataSource favoritesDataSource) {
-        this.googleSearchRemoteDataSource = googleSearchRemoteDataSource;
-        this.favoritesDataSource = favoritesDataSource;
+    public GoogleSearchRepository(ImageCacheDataSource imageCacheDataSource, FavoritesDataSource favoritesDataSource, GoogleSearchRemoteDataSource googleSearchRemoteDataSource) {
+        super(imageCacheDataSource, favoritesDataSource);
+        this.googleSearchRemoteDataSource = checkNotNull(googleSearchRemoteDataSource);
     }
 
     public Observable<List<Image>> getFavoriteImage(@NonNull String query, int start) {
