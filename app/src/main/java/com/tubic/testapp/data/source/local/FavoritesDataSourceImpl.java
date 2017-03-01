@@ -43,16 +43,16 @@ public class FavoritesDataSourceImpl implements FavoritesDataSource {
 
     @Override
     public String getLocalLink(String link) {
-        String localLink;
+        String localLink = null;
         String selection = ImagesPersistenceContract.ImageEntry.COLUMN_NAME_PATH + " LIKE ?";
         String[] selectionArgs = {link};
         Cursor cursor = contentResolver.query(ImagesPersistenceContract.ImageEntry.buildTasksUri(), null, selection, selectionArgs, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            Image image = ImageValues.from(cursor);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                Image image = ImageValues.from(cursor);
+                localLink = image.getLocalLink();
+            }
             cursor.close();
-            localLink = image.getLocalLink();
-        } else {
-            localLink = null;
         }
         return localLink;
     }
