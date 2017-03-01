@@ -61,8 +61,14 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
     protected final void loadNextPage() {
         if (pagination.isLoading())
             return;
+
+        pagination.setLoading(true);
+
         Subscription subscription = config(googleSearchRepository.getFavoriteImage(query, (int) pagination.getCurrentOffset()))
-                .doOnTerminate(view::notifyRefreshingComplete)
+                .doOnTerminate(() -> {
+                    view.notifyRefreshingComplete();
+                    pagination.setLoading(false);
+                })
                 .subscribe(
                         result -> {
                             System.out.println(result);
