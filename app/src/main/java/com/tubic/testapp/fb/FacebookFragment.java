@@ -1,5 +1,7 @@
 package com.tubic.testapp.fb;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -32,6 +34,9 @@ import javax.inject.Inject;
  */
 
 public class FacebookFragment extends BaseFragment implements FacebookContract.View {
+
+
+    private static final int REQUEST_CODE = 100;
 
     @Inject
     FacebookPresenter facebookPresenter;
@@ -108,7 +113,7 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
         recyclerView.getLayoutManager().scrollToPosition(offset);
     }
 
-    private final RecyclerViewClickListener<Image> viewItemClickListener = ((value, position) ->   startActivity(ImageActivity.create(getContext(), position, value)));
+    private final RecyclerViewClickListener<Image> viewItemClickListener = ((value, position) -> startActivityForResult(ImageActivity.create(getContext(), position, value), REQUEST_CODE));
     private final RecyclerViewClickListener<String> favoriteItemClickListener = ((value, position) -> facebookPresenter.makeFavoriteUnFavorite(position, value));
 
     @Override
@@ -188,4 +193,13 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK)
+            facebookPresenter.validateFavorite(
+                    data.getIntExtra("position", 0),
+                    /* unused value*/null
+            );
+    }
 }

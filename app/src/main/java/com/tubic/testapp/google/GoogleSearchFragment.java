@@ -1,6 +1,8 @@
 package com.tubic.testapp.google;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -32,6 +34,7 @@ import javax.inject.Inject;
 
 public class GoogleSearchFragment extends BaseFragment implements GoogleSearchContract.View {
 
+    private static final int REQUEST_CODE = 100;
 
     @Inject
     GoogleSearchPresenter googleSearchPresenter;
@@ -75,7 +78,7 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
         swipeRefreshLayout.setOnRefreshListener(() -> googleSearchPresenter.refresh());
     }
 
-    private final RecyclerViewClickListener<Image> viewItemClickListener = ((value, position) -> startActivity(ImageActivity.create(getContext(), position, value)));
+    private final RecyclerViewClickListener<Image> viewItemClickListener = ((value, position) -> startActivityForResult(ImageActivity.create(getContext(), position, value), REQUEST_CODE));
     private final RecyclerViewClickListener<String> favoriteItemClickListener = ((value, position) -> googleSearchPresenter.makeFavoriteUnFavorite(position, value));
 
     @Override
@@ -150,5 +153,15 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
         if (savedInstanceState != null) {
             googleSearchPresenter.restoreSaveState((State) savedInstanceState.getSerializable("state"));
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK)
+            googleSearchPresenter.validateFavorite(
+                    data.getIntExtra("position", 0),
+                      /* unused value*/null
+            );
     }
 }

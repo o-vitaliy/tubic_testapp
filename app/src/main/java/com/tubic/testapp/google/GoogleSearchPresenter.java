@@ -134,7 +134,7 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
     @Override
     protected void validateFavorite(int position, String link) {
         Image image = images.get(position);
-        Subscription subscription = config(googleSearchRepository.getCacheLink(image.getRemoteLink()))
+        config(googleSearchRepository.getCacheLink(image.getRemoteLink()))
                 .subscribe(
                         localLink -> {
                             images.get(position).setLocalLink(localLink);
@@ -142,6 +142,7 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
                         },
                         error -> view.onError(error.getMessage())
                 );
+
     }
 
     @Override
