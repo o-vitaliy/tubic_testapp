@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.tubic.testapp.R;
 import com.tubic.testapp.data.Image;
-import com.tubic.testapp.item.ImageViewHolder;
+import com.tubic.testapp.image.ImageViewHolder;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
     private List<Image> images = null;
 
-    private final RecyclerViewClickListener<String> openImageClickListener;
+    private final RecyclerViewClickListener<Image> openImageClickListener;
     private final RecyclerViewClickListener<String> favoritesClickListener;
 
-    public ImagesAdapter(RecyclerViewClickListener<String> openImageClickListener, RecyclerViewClickListener<String> favoritesClickListener) {
+    public ImagesAdapter(RecyclerViewClickListener<Image> openImageClickListener, RecyclerViewClickListener<String> favoritesClickListener) {
         this.openImageClickListener = openImageClickListener;
         this.favoritesClickListener = favoritesClickListener;
     }

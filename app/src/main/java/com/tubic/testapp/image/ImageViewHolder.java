@@ -1,4 +1,4 @@
-package com.tubic.testapp.item;
+package com.tubic.testapp.image;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,10 +21,10 @@ public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     private Image image;
 
-    private final RecyclerViewClickListener<String> openImageClickListener;
+    private final RecyclerViewClickListener<Image> openImageClickListener;
     private final RecyclerViewClickListener<String> favoritesClickListener;
 
-    public ImageViewHolder(View itemView, RecyclerViewClickListener<String> openImageClickListener, RecyclerViewClickListener<String> favoritesClickListener) {
+    public ImageViewHolder(View itemView, RecyclerViewClickListener<Image> openImageClickListener, RecyclerViewClickListener<String> favoritesClickListener) {
         super(itemView);
 
         this.openImageClickListener = openImageClickListener;
@@ -61,7 +61,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.item_image_image:
-                openImageClickListener.recyclerViewListClicked(image.getRemoteLink(), getAdapterPosition());
+                openImageClickListener.recyclerViewListClicked(image, getAdapterPosition());
                 break;
 
             case R.id.item_item_favorite:

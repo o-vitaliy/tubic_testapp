@@ -1,4 +1,4 @@
-package com.tubic.testapp.item;
+package com.tubic.testapp.image;
 
 import com.tubic.testapp.di.components.AppComponent;
 import com.tubic.testapp.di.scopes.Scope;
@@ -18,6 +18,6 @@ import dagger.Component;
 )
 interface ImageComponent {
 
-    void inject(ImageViewHolder imageViewHolder);
+    void inject(ImageActivity imageViewHolder);
 
 }

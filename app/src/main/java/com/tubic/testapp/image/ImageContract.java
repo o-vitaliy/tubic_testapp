@@ -1,4 +1,4 @@
-package com.tubic.testapp.item;
+package com.tubic.testapp.image;
 
 import com.tubic.testapp.BasePresenter;
 import com.tubic.testapp.BaseView;
@@ -12,13 +12,13 @@ interface ImageContract {
     interface View extends BaseView<Presenter> {
 
         void setFavorite(boolean favorite);
+
+        void imageChanged();
     }
 
     abstract class Presenter extends BasePresenter {
 
-        abstract void isFavorite(String link);
-
-        abstract void invertFavoriteState(String link);
+        abstract void makeFavoriteUnFavorite();
 
     }
 

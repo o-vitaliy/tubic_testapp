@@ -21,6 +21,7 @@ import com.tubic.testapp.common.LayoutManagerHelper;
 import com.tubic.testapp.common.RecyclerViewClickListener;
 import com.tubic.testapp.common.RecyclerViewScrollListener;
 import com.tubic.testapp.data.Image;
+import com.tubic.testapp.image.ImageActivity;
 
 import java.util.List;
 
@@ -107,7 +108,7 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
         recyclerView.getLayoutManager().scrollToPosition(offset);
     }
 
-    private final RecyclerViewClickListener<String> viewItemClickListener = ((value, position) -> System.out.println(value));
+    private final RecyclerViewClickListener<Image> viewItemClickListener = ((value, position) ->   startActivity(ImageActivity.create(getContext(), position, value)));
     private final RecyclerViewClickListener<String> favoriteItemClickListener = ((value, position) -> facebookPresenter.makeFavoriteUnFavorite(position, value));
 
     @Override

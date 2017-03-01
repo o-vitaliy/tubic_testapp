@@ -20,6 +20,7 @@ import com.tubic.testapp.common.RecyclerViewClickListener;
 import com.tubic.testapp.common.RecyclerViewScrollListener;
 import com.tubic.testapp.common.State;
 import com.tubic.testapp.data.Image;
+import com.tubic.testapp.image.ImageActivity;
 
 import java.util.List;
 
@@ -74,9 +75,7 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
         swipeRefreshLayout.setOnRefreshListener(() -> googleSearchPresenter.refresh());
     }
 
-    private final RecyclerViewClickListener<String> viewItemClickListener = ((value, position) -> {
-        System.out.println(value);
-    });
+    private final RecyclerViewClickListener<Image> viewItemClickListener = ((value, position) -> startActivity(ImageActivity.create(getContext(), position, value)));
     private final RecyclerViewClickListener<String> favoriteItemClickListener = ((value, position) -> googleSearchPresenter.makeFavoriteUnFavorite(position, value));
 
     @Override

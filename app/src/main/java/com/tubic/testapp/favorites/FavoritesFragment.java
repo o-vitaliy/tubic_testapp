@@ -14,6 +14,8 @@ import com.tubic.testapp.R;
 import com.tubic.testapp.common.BaseFragment;
 import com.tubic.testapp.common.LayoutManagerHelper;
 import com.tubic.testapp.common.RecyclerViewClickListener;
+import com.tubic.testapp.data.Image;
+import com.tubic.testapp.image.ImageActivity;
 
 import javax.inject.Inject;
 
@@ -60,7 +62,7 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
         recyclerView.setAdapter(imagesAdapter);
     }
 
-    private final RecyclerViewClickListener<String> viewItemClickListener = ((value, position) -> System.out.println(value));
+    private final RecyclerViewClickListener<Image> viewItemClickListener = ((value, position) -> startActivity(ImageActivity.create(getContext(), position, value)));
     private final RecyclerViewClickListener<String> favoriteItemClickListener = ((value, position) -> favoritesPresenter.makeFavoriteUnFavorite(position, value));
 
 

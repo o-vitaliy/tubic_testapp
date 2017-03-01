@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import com.tubic.testapp.R;
 import com.tubic.testapp.common.CursorRecyclerViewAdapter;
 import com.tubic.testapp.common.RecyclerViewClickListener;
+import com.tubic.testapp.data.Image;
 import com.tubic.testapp.data.source.ImageValues;
-import com.tubic.testapp.item.ImageViewHolder;
+import com.tubic.testapp.image.ImageViewHolder;
 
 /**
  * Created by ovitaliy on 01.03.2017.
@@ -17,10 +18,10 @@ import com.tubic.testapp.item.ImageViewHolder;
 
 public class FavoritesAdapter extends CursorRecyclerViewAdapter<ImageViewHolder> {
 
-    private final RecyclerViewClickListener<String> openImageClickListener;
+    private final RecyclerViewClickListener<Image> openImageClickListener;
     private final RecyclerViewClickListener<String> favoritesClickListener;
 
-    public FavoritesAdapter(RecyclerViewClickListener<String> openImageClickListener, RecyclerViewClickListener<String> favoritesClickListener) {
+    public FavoritesAdapter(RecyclerViewClickListener<Image> openImageClickListener, RecyclerViewClickListener<String> favoritesClickListener) {
         super(null);
         this.openImageClickListener = openImageClickListener;
         this.favoritesClickListener = favoritesClickListener;
