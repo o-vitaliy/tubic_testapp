@@ -4,8 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-import com.tubic.testapp.App;
 import com.tubic.testapp.R;
 import com.tubic.testapp.common.RecyclerViewClickListener;
 import com.tubic.testapp.data.Image;
@@ -50,6 +50,8 @@ public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnC
                 .resize(480, 360)
                 .centerCrop()
                 .noFade()
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .placeholder(R.drawable.image_progress_bar_white)
                 .into(imageView);
 
         likeButton.setSelected(image.isFavorites());
