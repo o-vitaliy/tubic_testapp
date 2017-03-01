@@ -156,6 +156,6 @@ class FacebookPresenter extends FacebookContract.Presenter {
 
     @Override
     protected final void stop() {
-        compositeSubscription.unsubscribe();
+        compositeSubscription.clear();
     }
 }

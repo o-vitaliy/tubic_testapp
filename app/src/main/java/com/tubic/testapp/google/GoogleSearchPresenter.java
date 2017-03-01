@@ -146,6 +146,6 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
 
     @Override
     protected final void stop() {
-        compositeSubscription.unsubscribe();
+        compositeSubscription.clear();
     }
 }
