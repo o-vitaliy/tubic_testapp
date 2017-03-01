@@ -2,6 +2,8 @@ package com.tubic.testapp.di.modules;
 
 import android.support.annotation.NonNull;
 
+import com.tubic.testapp.data.source.FacebookDataSource;
+import com.tubic.testapp.data.source.FacebookRepository;
 import com.tubic.testapp.data.source.FavoritesDataSource;
 import com.tubic.testapp.data.source.GoogleSearchRemoteDataSource;
 import com.tubic.testapp.data.source.GoogleSearchRepository;
@@ -21,5 +23,12 @@ public class RepositoriesModule {
     @NonNull
     public GoogleSearchRepository provideGoogleSearchRepository(GoogleSearchRemoteDataSource googleSearchRemoteDataSource, FavoritesDataSource favoritesDataSource) {
         return new GoogleSearchRepository(googleSearchRemoteDataSource, favoritesDataSource);
+    }
+
+    @Singleton
+    @Provides
+    @NonNull
+    public FacebookRepository provideFacebookRepository(FacebookDataSource facebookDataSource, FavoritesDataSource favoritesDataSource) {
+        return new FacebookRepository(facebookDataSource, favoritesDataSource);
     }
 }

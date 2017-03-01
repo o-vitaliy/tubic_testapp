@@ -1,10 +1,9 @@
 package com.tubic.testapp.fb;
 
 import com.facebook.AccessToken;
-import com.tubic.testapp.common.Pagination;
 import com.tubic.testapp.common.State;
 import com.tubic.testapp.data.Image;
-import com.tubic.testapp.data.source.GoogleSearchRepository;
+import com.tubic.testapp.data.source.FacebookRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ import rx.subscriptions.CompositeSubscription;
 
 class FacebookPresenter extends FacebookContract.Presenter {
 
-    private final GoogleSearchRepository googleSearchRepository;
+    private final FacebookRepository facebookRepository;
 
     private final FacebookContract.View view;
 
@@ -27,16 +26,16 @@ class FacebookPresenter extends FacebookContract.Presenter {
     private List<Image> images = new ArrayList<>();
 
     @Inject
-    FacebookPresenter(FacebookContract.View view, GoogleSearchRepository googleSearchRepository) {
+    FacebookPresenter(FacebookContract.View view, FacebookRepository facebookRepository) {
         this.view = view;
-        this.googleSearchRepository = googleSearchRepository;
+        this.facebookRepository = facebookRepository;
     }
 
     protected final void start() {
         if (AccessToken.getCurrentAccessToken() != null)
-            view.facebookLoggedIn();
+            facebookLoggedIn();
         else
-            view.facebookLoggedOut();
+            facebookLoggedOut();
     }
 
     @Override
@@ -67,17 +66,29 @@ class FacebookPresenter extends FacebookContract.Presenter {
     protected final void loadNextPage() {
         if (pagination.isLoading())
             return;
-        Subscription subscription = config(googleSearchRepository.getFavoriteImage("", (int) pagination.getCurrentOffset()))
-                .doOnTerminate(view::notifyRefreshingComplete)
+        if (!pagination.canLoad()) {
+            view.showSearchResults(images, images.size(), 0);
+            return;
+        }
+
+        pagination.setLoading(true);
+
+        Subscription subscription = config(facebookRepository.getImages(pagination.getAfter()))
+                .doOnTerminate(() -> {
+                    view.notifyRefreshingComplete();
+                    pagination.setLoading(false);
+                })
                 .subscribe(
                         result -> {
                             System.out.println(result);
-                            if (result == null || images.size() + result.size() == 0) {
+                            pagination.setAfter(result.first);
+                            List<Image> newImages = result.second;
+                            if (images == null || images.size() + newImages.size() == 0) {
                                 view.showSearchNoResults();
                             } else {
                                 int count = images.size();
-                                images.addAll(result);
-                                view.showSearchResults(images, count, result.size());
+                                images.addAll(newImages);
+                                view.showSearchResults(images, count, newImages.size());
                             }
                         },
                         error -> view.onError(error.getMessage())
@@ -88,10 +99,10 @@ class FacebookPresenter extends FacebookContract.Presenter {
 
     @Override
     State getSaveState() {
-        return new State.Builder()
+        return new FacebookState.Builder()
+                .setAfter(pagination != null ? pagination.getAfter() : null)
                 .setItems(images)
                 .setItemOffset(view.getVisibleItem())
-                .setPaginationOffset(pagination != null ? (int) pagination.getCurrentOffset() : 0)
                 .build();
 
     }
@@ -99,7 +110,7 @@ class FacebookPresenter extends FacebookContract.Presenter {
     @Override
     void restoreSaveState(State state) {
         pagination = new Pagination();
-        pagination.setCurrentOffset(state.getPaginationOffset());
+        pagination.setAfter(((FacebookState) state).getAfter());
         images = state.getImages();
 
         if (images.size() > 0) {

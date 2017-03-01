@@ -3,6 +3,9 @@ package com.tubic.testapp.di.modules;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.tubic.testapp.data.source.FacebookDataSource;
+import com.tubic.testapp.data.source.FacebookRemoteDataSource;
+import com.tubic.testapp.data.source.FakeFacebookRemoteDataSource;
 import com.tubic.testapp.data.source.FakeGoogleSearchRemoteDataSource;
 import com.tubic.testapp.data.source.FavoritesDataSource;
 import com.tubic.testapp.data.source.GoogleSearchRemoteDataSource;
@@ -16,7 +19,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit2.Retrofit;
 
 /**
  * Created by ovitaliy on 27.02.2017.
@@ -43,6 +45,20 @@ final public class DataSourceModule {
     @NonNull
     ImageCacheDataSource provideImageCacheDataSource(Context context) {
         return new ImageCacheDataSourceImpl(new File(context.getExternalCacheDir(), "favorites"));
+    }
+
+    @Singleton
+    @Provides
+    @NonNull
+    FacebookRemoteDataSource provideFacebookRemoteDataSource() {
+        return new FakeFacebookRemoteDataSource();
+    }
+
+    @Singleton
+    @Provides
+    @NonNull
+    FacebookDataSource provideFacebookDataSource(FacebookRemoteDataSource facebookRemoteDataSource) {
+        return new FacebookDataSource(facebookRemoteDataSource);
     }
 
 }

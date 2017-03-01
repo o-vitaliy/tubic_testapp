@@ -1,20 +1,15 @@
 package com.tubic.testapp.data.source;
 
-import android.os.Bundle;
 import android.support.v4.util.Pair;
 
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Created by ovitaliy on 28.02.2017.
@@ -22,49 +17,54 @@ import rx.Subscriber;
 
 public class FacebookDataSource {
 
-    private static final int LIMIT = 2;
+    private static final int PREFFERED_IMAGE_WIDTH = 640;
 
-    public Observable<Pair<String, List<String>>> getImages(String after) {
+    private final FacebookRemoteDataSource facebookRemoteDataSource;
 
-        return Observable.create(new Observable.OnSubscribe<Pair<String, List<String>>>() {
-            @Override
-            public void call(Subscriber<? super Pair<String, List<String>>> subscriber) {
+    public FacebookDataSource(FacebookRemoteDataSource facebookRemoteDataSource) {
+        this.facebookRemoteDataSource = facebookRemoteDataSource;
+    }
 
-                GraphRequest request = GraphRequest.newGraphPathRequest(
-                        AccessToken.getCurrentAccessToken(),
-                        "/me/photos/uploaded",
-                        new GraphRequest.Callback() {
-                            @Override
-                            public void onCompleted(GraphResponse response) {
-                                JSONObject responseJsonObject = response.getJSONObject();
-                                try {
-                                    String after = responseJsonObject.getJSONObject("padding").getJSONObject("cursors").getString("after");
-                                    JSONArray imageJsonArray = responseJsonObject.getJSONArray("data");
 
-                                    List<String> images = new ArrayList<String>(LIMIT);
+    public Observable<Pair<String, List<String>>> getImages(String after, int limit) {
 
-                                    for (int i = 0; i < imageJsonArray.length(); i++)
-                                        images.add(imageJsonArray.getJSONObject(i).getString("link"));
+        return facebookRemoteDataSource.getImages(after, limit).map(responseJsonObject -> {
+            try {
+                JSONObject paging = responseJsonObject.getJSONObject("paging");
+                String nextAfter =
+                        paging.has("next")
+                                ? paging.getJSONObject("cursors").getString("after")
+                                : null;
 
-                                    subscriber.onNext(new Pair<String, List<String>>(after, images));
-                                } catch (Exception ex) {
-                                    subscriber.onError(ex);
-                                }
-                                subscriber.onCompleted();
-                            }
-                        });
+                JSONArray imageJsonArray = responseJsonObject.getJSONArray("data");
 
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "link");
-                parameters.putString("limit", String.valueOf(LIMIT));
-                if (after != null)
-                    parameters.putString("images", after);
-                request.setParameters(parameters);
-                request.executeAsync();
+                List<String> images = new ArrayList<>(limit);
+
+                for (int i = 0; i < imageJsonArray.length(); i++)
+                    images.add(pickImage(imageJsonArray.getJSONObject(i).getJSONArray("images")));
+
+                return new Pair<>(nextAfter, images);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
         });
+    }
 
 
+    private String pickImage(JSONArray imagesJsonArray) throws JSONException {
+        int size = imagesJsonArray.length();
+
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                JSONObject jsonObject = imagesJsonArray.getJSONObject(i);
+                if (jsonObject.getInt("width") <= PREFFERED_IMAGE_WIDTH)
+                    return jsonObject.getString("source");
+            }
+
+            return imagesJsonArray.getJSONObject(0).getString("source");
+        }
+
+        return null;
     }
 
 }

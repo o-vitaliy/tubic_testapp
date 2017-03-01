@@ -1,5 +1,6 @@
 package com.tubic.testapp.di.components;
 
+import com.tubic.testapp.data.source.FacebookRepository;
 import com.tubic.testapp.data.source.GoogleSearchRepository;
 
 /**
@@ -9,4 +10,6 @@ import com.tubic.testapp.data.source.GoogleSearchRepository;
 public interface RepositoriesComponent {
 
     GoogleSearchRepository googleSearchRepository();
+
+    FacebookRepository facebookRepository();
 }

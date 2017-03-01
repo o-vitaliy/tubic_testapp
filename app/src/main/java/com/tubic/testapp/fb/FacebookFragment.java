@@ -8,16 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.tubic.testapp.R;
-import com.tubic.testapp.common.BaseFragment;
-import com.tubic.testapp.common.ImagesAdapter;
-import com.tubic.testapp.common.LayoutManagerHelper;
-import com.tubic.testapp.common.RecyclerViewScrollListener;
+import com.tubic.testapp.common.*;
 import com.tubic.testapp.data.Image;
 
 import java.util.List;
@@ -86,6 +84,16 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.facebook_logout:
+                facebookPresenter.facebookLoggedOut();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void notifyRefreshingComplete() {
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -122,13 +130,19 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
     @Override
     public void refresh() {
         imagesAdapter.clear();
+        recyclerView.clearOnScrollListeners();
     }
 
     @Override
     public void showSearchResults(List<Image> images, int oldSize, int newItemsCount) {
-        imagesAdapter.add(images, oldSize, newItemsCount);
-        if (newItemsCount > 0)
+        if (newItemsCount > 0) {
+            recyclerView.clearOnScrollListeners();
+            imagesAdapter.add(images, oldSize, newItemsCount);
             RecyclerViewScrollListener.attach(recyclerView, () -> facebookPresenter.loadNextPage());
+        } else {
+            recyclerView.clearOnScrollListeners();
+        }
+
     }
 
     @Override
@@ -145,6 +159,20 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
     public void onStop() {
         super.onStop();
         facebookPresenter.stop();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("state", facebookPresenter.getSaveState());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            facebookPresenter.restoreSaveState((FacebookState) savedInstanceState.getSerializable("state"));
+        }
     }
 
 }

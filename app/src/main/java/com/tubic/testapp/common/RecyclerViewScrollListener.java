@@ -21,7 +21,7 @@ public class RecyclerViewScrollListener extends RecyclerView.OnScrollListener {
 
         recyclerView.addOnScrollListener(recyclerViewScrollListener);
 
-        recyclerView.scrollBy(0,0);
+        recyclerView.post(()->recyclerView.scrollBy(0,0));
 
         return recyclerViewScrollListener;
     }
@@ -52,6 +52,7 @@ public class RecyclerViewScrollListener extends RecyclerView.OnScrollListener {
             if (autoRemove)
                 recyclerView.removeOnScrollListener(this);
         }
+
     }
 
 
