@@ -23,6 +23,9 @@ interface GoogleSearchContract {
 
         abstract void restoreSaveState(State state);
 
+        abstract void validateFavorite(int position);
+
+        abstract void validateFavorite(String link);
     }
 
 }

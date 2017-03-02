@@ -142,9 +142,9 @@ class FacebookPresenter extends FacebookContract.Presenter {
     }
 
     @Override
-    protected void validateFavorite(int position, String link) {
+    protected void validateFavorite(int position) {
         Image image = images.get(position);
-        Subscription subscription = config(facebookRepository.getCacheLink(image.getRemoteLink()))
+        config(facebookRepository.getCacheLink(image.getRemoteLink()))
                 .subscribe(
                         localLink -> {
                             images.get(position).setLocalLink(localLink);
@@ -152,6 +152,17 @@ class FacebookPresenter extends FacebookContract.Presenter {
                         },
                         error -> view.onError(error.getMessage())
                 );
+    }
+
+
+    @Override
+    protected void validateFavorite(String link) {
+        for (int i = 0; i < images.size(); i++) {
+            if (images.get(i).getRemoteLink().equals(link)) {
+                validateFavorite(i);
+                return;
+            }
+        }
     }
 
     @Override

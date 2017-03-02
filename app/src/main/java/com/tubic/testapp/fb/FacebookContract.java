@@ -22,7 +22,6 @@ interface FacebookContract {
 
     abstract class Presenter extends BaseSearchPresenter {
 
-
         abstract State getSaveState();
 
         abstract void restoreSaveState(State state);
@@ -31,6 +30,9 @@ interface FacebookContract {
 
         abstract void facebookLoggedOut();
 
+        protected abstract void validateFavorite(String link);
+
+        protected abstract void validateFavorite(int position);
 
     }
 

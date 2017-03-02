@@ -17,7 +17,7 @@ public interface FavoritesContract {
 
         void showResults(Cursor cursor);
 
-        void notifyItemChangedAtPosition(int position);
+        void notifyItemChanged(String link);
     }
 
     abstract class Presenter extends BaseSearchPresenter {

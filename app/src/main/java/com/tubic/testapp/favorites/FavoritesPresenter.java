@@ -39,7 +39,8 @@ public class FavoritesPresenter extends FavoritesContract.Presenter implements L
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
-    @Inject FavoritesPresenter(FavoritesContract.View view, LoaderManager loaderManager, LoaderProvider loaderProvider, ImageRepository imageRepository) {
+    @Inject
+    FavoritesPresenter(FavoritesContract.View view, LoaderManager loaderManager, LoaderProvider loaderProvider, ImageRepository imageRepository) {
         this.view = checkNotNull(view);
         this.loaderManager = checkNotNull(loaderManager);
         this.loaderProvider = checkNotNull(loaderProvider);
@@ -92,7 +93,7 @@ public class FavoritesPresenter extends FavoritesContract.Presenter implements L
                 .subscribe(
                         localLink -> {
                             getImageAtPosition(position).setLocalLink(localLink);
-                            view.notifyItemChangedAtPosition(position);
+                            view.notifyItemChanged(link);
                         },
                         error -> view.onError(error.getMessage())
                 );
@@ -104,20 +105,6 @@ public class FavoritesPresenter extends FavoritesContract.Presenter implements L
         if (!data.moveToPosition(position))
             throw new RuntimeException("cursore cann't move to position " + position);
         return ImageValues.from(data);
-    }
-
-    @Override
-    protected void validateFavorite(int position, String link) {
-        Image image = getImageAtPosition(position);
-        Subscription subscription = config(imageRepository.getCacheLink(image.getRemoteLink()))
-                .subscribe(
-                        localLink -> {
-                            getImageAtPosition(position).setLocalLink(localLink);
-                            view.notifyItemChangedAtPosition(position);
-                        },
-                        error -> view.onError(error.getMessage())
-                );
-        compositeSubscription.add(subscription);
     }
 
     @Override

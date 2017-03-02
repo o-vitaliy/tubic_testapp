@@ -132,7 +132,7 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
     }
 
     @Override
-    protected void validateFavorite(int position, String link) {
+    protected void validateFavorite(int position) {
         Image image = images.get(position);
         config(googleSearchRepository.getCacheLink(image.getRemoteLink()))
                 .subscribe(
@@ -143,6 +143,16 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
                         error -> view.onError(error.getMessage())
                 );
 
+    }
+
+    @Override
+    void validateFavorite(String link) {
+        for (int i = 0; i < images.size(); i++) {
+            if (images.get(i).getRemoteLink().equals(link)) {
+                validateFavorite(i);
+                return;
+            }
+        }
     }
 
     @Override

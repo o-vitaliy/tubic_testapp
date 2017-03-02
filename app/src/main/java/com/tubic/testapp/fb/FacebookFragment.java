@@ -1,9 +1,13 @@
 package com.tubic.testapp.fb;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +22,7 @@ import android.widget.Toast;
 
 import com.tubic.testapp.R;
 import com.tubic.testapp.common.BaseFragment;
+import com.tubic.testapp.common.ImageEventProvider;
 import com.tubic.testapp.common.ImagesAdapter;
 import com.tubic.testapp.common.LayoutManagerHelper;
 import com.tubic.testapp.common.RecyclerViewClickListener;
@@ -49,6 +54,16 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
 
     private boolean isLoggedIn;
 
+
+    private BroadcastReceiver imageChangeBroadCastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            facebookPresenter.validateFavorite(intent.getStringExtra(ImageEventProvider.EXTRA_LINK));
+        }
+    };
+
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +73,8 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
                 .appComponent(getAppComponent())
                 .facebookPresenterModule(new FacebookPresenterModule(this))
                 .build().inject(this);
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(imageChangeBroadCastReceiver, new IntentFilter(ImageEventProvider.EVENT_IMAGE_CHANGED));
     }
 
     @Nullable
@@ -102,6 +119,7 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void notifyRefreshingComplete() {
@@ -179,6 +197,8 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
         facebookPresenter.stop();
     }
 
+
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -197,9 +217,12 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK)
-            facebookPresenter.validateFavorite(
-                    data.getIntExtra("position", 0),
-                    /* unused value*/null
-            );
+            facebookPresenter.validateFavorite(data.getIntExtra("position", 0));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(imageChangeBroadCastReceiver);
     }
 }

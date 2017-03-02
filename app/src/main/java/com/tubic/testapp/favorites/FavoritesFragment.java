@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.tubic.testapp.R;
 import com.tubic.testapp.common.BaseFragment;
+import com.tubic.testapp.common.ImageEventProvider;
 import com.tubic.testapp.common.LayoutManagerHelper;
 import com.tubic.testapp.common.RecyclerViewClickListener;
 import com.tubic.testapp.data.Image;
@@ -83,8 +84,8 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
     }
 
     @Override
-    public void notifyItemChangedAtPosition(int position) {
-        // imagesAdapter.notifyItemChanged(position);
+    public void notifyItemChanged(String link) {
+        ImageEventProvider.notifyImageChangedInFavorites(getContext(), link);
     }
 
     @Override
