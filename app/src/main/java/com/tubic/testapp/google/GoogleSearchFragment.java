@@ -89,6 +89,7 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
         recyclerView.setAdapter(imagesAdapter);
 
         searchView = (SearchView) view.findViewById(R.id.google_search);
+        searchView.onActionViewExpanded();
         searchView.setOnQueryTextListener(onQueryTextListener);
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.google_main);
@@ -171,6 +172,12 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        hideKeyboard();
     }
 
     @Override
