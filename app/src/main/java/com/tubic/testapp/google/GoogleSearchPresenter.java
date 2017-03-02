@@ -50,6 +50,7 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
     protected void refresh() {
         compositeSubscription.clear();
         pagination = new Pagination();
+        images.clear();
         view.refresh();
         if (this.query != null) {
             loadNextPage();
@@ -158,5 +159,14 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
     @Override
     protected final void stop() {
         compositeSubscription.clear();
+    }
+
+     void clear() {
+         compositeSubscription.clear();
+         pagination = new Pagination();
+         images.clear();
+         view.refresh();
+         view.notifyRefreshingComplete();
+
     }
 }

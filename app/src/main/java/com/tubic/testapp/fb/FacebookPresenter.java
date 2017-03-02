@@ -59,6 +59,7 @@ class FacebookPresenter extends FacebookContract.Presenter {
     protected void refresh() {
         compositeSubscription.clear();
         pagination = new Pagination();
+        images.clear();
         view.refresh();
         loadNextPage();
     }

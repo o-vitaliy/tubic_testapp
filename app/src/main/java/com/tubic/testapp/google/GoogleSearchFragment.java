@@ -13,9 +13,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.tubic.testapp.R;
@@ -98,6 +100,7 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
 
     @Override
     public void refresh() {
+        recyclerView.clearOnScrollListeners();
         imagesAdapter.clear();
     }
 
@@ -147,14 +150,28 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
         @Override
         public boolean onQueryTextSubmit(String query) {
             googleSearchPresenter.search(query);
+            hideKeyboard();
             return true;
         }
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            return false;
+            if (TextUtils.isEmpty(newText)) {
+                googleSearchPresenter.clear();
+                return true;
+            } else {
+                return false;
+            }
         }
     };
+
+    private void hideKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
