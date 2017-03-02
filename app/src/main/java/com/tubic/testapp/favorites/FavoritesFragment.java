@@ -61,6 +61,7 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
         recyclerView = (RecyclerView) view.findViewById(R.id.favorites_list);
         recyclerView.setLayoutManager(LayoutManagerHelper.getLayoutManager(getContext()));
         recyclerView.setAdapter(imagesAdapter);
+        LayoutManagerHelper.applyItemDecoration(recyclerView);
     }
 
     private final RecyclerViewClickListener<Image> viewItemClickListener = ((value, position) -> startActivity(ImageActivity.create(getContext(), position, value)));

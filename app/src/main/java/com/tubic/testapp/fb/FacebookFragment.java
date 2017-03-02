@@ -63,7 +63,6 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
     };
 
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +93,7 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
         recyclerView = (RecyclerView) view.findViewById(R.id.facebook_list);
         recyclerView.setLayoutManager(LayoutManagerHelper.getLayoutManager(getContext()));
         recyclerView.setAdapter(imagesAdapter);
+        LayoutManagerHelper.applyItemDecoration(recyclerView);
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.facebook_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> facebookPresenter.refresh());
@@ -196,7 +196,6 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
         super.onStop();
         facebookPresenter.stop();
     }
-
 
 
     @Override

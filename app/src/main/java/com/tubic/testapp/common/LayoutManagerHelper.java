@@ -1,6 +1,7 @@
 package com.tubic.testapp.common;
 
 import android.content.Context;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,12 @@ public class LayoutManagerHelper {
             else
                 return new LinearLayoutManager(context);
         }
+    }
+
+    public static void applyItemDecoration(RecyclerView recyclerView) {
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        if (recyclerView.getLayoutManager() instanceof GridLayoutManager)
+            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
     }
 
 
