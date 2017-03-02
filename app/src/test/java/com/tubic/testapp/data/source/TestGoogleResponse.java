@@ -259,6 +259,7 @@ public class TestGoogleResponse {
             "}";
 
 
+    @SuppressWarnings("unchecked")
     @Test
     public void parse() {
         HashMap response = new Gson().fromJson(RESPONSE, HashMap.class);

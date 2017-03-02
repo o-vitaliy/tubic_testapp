@@ -32,7 +32,8 @@ public class ImageCacheDataSourceRepositoryTest {
     public void testDownLoadImage() {
         String localLink = imageCacheDataSourceImpl.downloadImage("http://buyersguide.caranddriver.com/media/assets/submodel/7651.jpg").toBlocking().first();
         Assert.assertNotNull(localLink);
-        File cachedFile = new File(cacheFolder, localLink);
+        localLink = localLink.replace("file://", "");
+        File cachedFile = new File(localLink);
         Assert.assertNotNull(cachedFile);
         Assert.assertTrue(cachedFile.exists());
         Assert.assertTrue(cachedFile.length() > 0);

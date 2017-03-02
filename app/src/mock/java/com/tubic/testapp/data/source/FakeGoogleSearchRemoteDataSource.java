@@ -4,15 +4,18 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
  * Created by ovitaliy on 27.02.2017.
  */
 
-public class FakeGoogleSearchRemoteDataSource implements GoogleSearchRemoteDataSource{
+public class FakeGoogleSearchRemoteDataSource implements GoogleSearchRemoteDataSource {
 
-    public Observable<HashMap> search(String query, int start, int limit) {
+
+    @Override
+    public Observable<HashMap> search(@Query("q") String query, @Query("start") Integer start, @Query("num") int limit, @Query("key") String key, @Query("cx") String cx, @Query("searchType") String searchType) {
         return Observable.just(new Gson().fromJson(RESPONSE, HashMap.class));
     }
 

@@ -8,6 +8,7 @@ import com.tubic.testapp.data.source.FacebookRemoteDataSource;
 import com.tubic.testapp.data.source.FakeFacebookRemoteDataSource;
 import com.tubic.testapp.data.source.FakeGoogleSearchRemoteDataSource;
 import com.tubic.testapp.data.source.FavoritesDataSource;
+import com.tubic.testapp.data.source.GoogleSearchDataSource;
 import com.tubic.testapp.data.source.GoogleSearchRemoteDataSource;
 import com.tubic.testapp.data.source.ImageCacheDataSource;
 import com.tubic.testapp.data.source.ImageCacheDataSourceImpl;
@@ -16,10 +17,12 @@ import com.tubic.testapp.data.source.local.FavoritesDataSourceImpl;
 
 import java.io.File;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit2.Retrofit;
 
 /**
  * Created by ovitaliy on 27.02.2017.
@@ -48,6 +51,14 @@ final public class DataSourceModule {
     GoogleSearchRemoteDataSource provideGoogleSearchRemoteDataSource() {
         return new FakeGoogleSearchRemoteDataSource();
     }
+
+    @Singleton
+    @Provides
+    @NonNull
+    GoogleSearchDataSource googleSearchDataSource(@Named("apiKey") String apiKey, @Named("cx") String key, GoogleSearchRemoteDataSource googleSearchRemoteDataSource) {
+        return new GoogleSearchDataSource(googleSearchRemoteDataSource, apiKey, key);
+    }
+
 
     @Singleton
     @Provides

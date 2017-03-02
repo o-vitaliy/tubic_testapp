@@ -35,10 +35,10 @@ public class FacebookRemoteDataSource {
                         });
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "link");
+                parameters.putString("fields", "images");
                 parameters.putString("limit", String.valueOf(limit));
                 if (after != null)
-                    parameters.putString("images", after);
+                    parameters.putString("after", after);
                 request.setParameters(parameters);
                 request.executeAsync();
             }

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.tubic.testapp.data.source.FacebookDataSource;
 import com.tubic.testapp.data.source.FacebookRepository;
 import com.tubic.testapp.data.source.FavoritesDataSource;
+import com.tubic.testapp.data.source.GoogleSearchDataSource;
 import com.tubic.testapp.data.source.GoogleSearchRemoteDataSource;
 import com.tubic.testapp.data.source.GoogleSearchRepository;
 import com.tubic.testapp.data.source.ImageCacheDataSource;
@@ -23,8 +24,8 @@ public class RepositoriesModule {
     @Singleton
     @Provides
     @NonNull
-    public GoogleSearchRepository provideGoogleSearchRepository(ImageCacheDataSource imageCacheDataSource, GoogleSearchRemoteDataSource googleSearchRemoteDataSource, FavoritesDataSource favoritesDataSource) {
-        return new GoogleSearchRepository(imageCacheDataSource, favoritesDataSource, googleSearchRemoteDataSource);
+    public GoogleSearchRepository provideGoogleSearchRepository(ImageCacheDataSource imageCacheDataSource, GoogleSearchDataSource googleSearchDataSource, FavoritesDataSource favoritesDataSource) {
+        return new GoogleSearchRepository(imageCacheDataSource, favoritesDataSource, googleSearchDataSource);
     }
 
     @Singleton

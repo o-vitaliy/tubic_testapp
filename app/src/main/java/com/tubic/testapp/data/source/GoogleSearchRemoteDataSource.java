@@ -3,7 +3,7 @@ package com.tubic.testapp.data.source;
 import java.util.HashMap;
 
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -12,6 +12,13 @@ import rx.Observable;
 
 public interface GoogleSearchRemoteDataSource {
 
-    @GET("v1")
-    Observable<HashMap> search(@Path("q") String query, @Path("start") int start, @Path("num") int limit);
+    @GET("customsearch/v1")
+    Observable<HashMap> search(
+            @Query("q") String query,
+            @Query("start") Integer start,
+            @Query("num") int limit,
+            @Query("key") String key,
+            @Query("cx") String cx,
+            @Query("searchType") String searchType
+    );
 }

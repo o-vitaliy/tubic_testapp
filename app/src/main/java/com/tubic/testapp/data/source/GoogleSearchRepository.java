@@ -19,11 +19,12 @@ import static dagger.internal.Preconditions.checkNotNull;
 
 public class GoogleSearchRepository extends ImageRepository {
 
-    private final GoogleSearchRemoteDataSource googleSearchRemoteDataSource;
+    private final GoogleSearchDataSource googleSearchRemoteDataSource;
 
-    public GoogleSearchRepository(ImageCacheDataSource imageCacheDataSource, FavoritesDataSource favoritesDataSource, GoogleSearchRemoteDataSource googleSearchRemoteDataSource) {
+
+    public GoogleSearchRepository(ImageCacheDataSource imageCacheDataSource, FavoritesDataSource favoritesDataSource, GoogleSearchDataSource googleSearchDataSource) {
         super(imageCacheDataSource, favoritesDataSource);
-        this.googleSearchRemoteDataSource = checkNotNull(googleSearchRemoteDataSource);
+        this.googleSearchRemoteDataSource = checkNotNull(googleSearchDataSource);
     }
 
     public Observable<List<Image>> getFavoriteImage(@NonNull String query, int start) {

@@ -1,8 +1,10 @@
 package com.tubic.testapp.di.modules;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
+import com.tubic.testapp.R;
+
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -26,5 +28,18 @@ public final class AppModule {
         return context;
     }
 
+    @Singleton
+    @Provides
+    @Named("apiKey")
+    public String provideApiKey() {
+        return context.getString(R.string.google_search_apikey);
+    }
+
+    @Singleton
+    @Provides
+    @Named("cx")
+    public String provideCx() {
+        return context.getString(R.string.google_search_cx);
+    }
 
 }

@@ -6,6 +6,7 @@ import com.tubic.testapp.di.modules.AppModule;
 import com.tubic.testapp.di.modules.DataSourceModule;
 import com.tubic.testapp.di.modules.RepositoriesModule;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -22,4 +23,7 @@ import dagger.Component;
 public interface AppComponent extends DataSourceComponent, RepositoriesComponent {
     /* Provisioning methods. */
     Context context();
+
+
+
 }
