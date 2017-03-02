@@ -37,6 +37,8 @@ public class ImageActivity extends AppCompatActivity implements ImageContract.Vi
     private View favoritesView;
     private SubsamplingScaleImageView imageView;
 
+    private boolean imageChanged;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,9 +80,26 @@ public class ImageActivity extends AppCompatActivity implements ImageContract.Vi
 
     @Override
     public void imageChanged() {
+        imageChanged = true;
         Intent intent = new Intent();
         intent.putExtra("position", getIntent().getIntExtra("position", 0));
         setResult(RESULT_OK, intent);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("imageChanged", imageChanged);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null && savedInstanceState.getBoolean("imageChanged", false)) {
+            imageChanged = true;
+            imageChanged();
+        }
+
     }
 
     private Target imageTarget = new Target() {
