@@ -55,7 +55,9 @@ class FacebookPresenter extends FacebookContract.Presenter {
         view.refresh();
 
         view.facebookLoggedOut();
-
+        view.hideSearchNoResults();
+        view.hideProgressBar();
+        view.notifyRefreshingComplete();
     }
 
     @Override

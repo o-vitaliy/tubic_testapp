@@ -31,7 +31,7 @@
             android:authorities="${packageName}"
             android:exported="false" />
 
-        <activity android:name=".image.ImageActivity"></activity>
+        <activity android:name=".image.ImageActivity"/>
     </application>
 
 </manifest>
