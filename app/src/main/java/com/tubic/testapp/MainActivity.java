@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.tubic.testapp.favorites.FavoritesFragment;
 import com.tubic.testapp.fb.FacebookFragment;
@@ -22,6 +24,21 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.main_viewpager);
         viewPager.setAdapter(new ViewPagerAdapter(this, getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(2);
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if (position != 0)
+                    hideKeyboard();
+            }
+        });
+    }
+
+    private void hideKeyboard() {
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
