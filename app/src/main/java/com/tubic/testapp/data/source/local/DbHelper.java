@@ -21,7 +21,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     public static final String DATABASE_NAME = "testapp.db";
 
@@ -30,13 +30,14 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String INTEGER_TYPE = " INTEGER";
 
     private static final String BOOLEAN_TYPE = " INTEGER";
+    private static final String UNIQUE = " UNIQUE ";
 
     private static final String COMMA_SEP = ",";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + ImagesPersistenceContract.ImageEntry.TABLE_NAME + " (" +
                     ImagesPersistenceContract.ImageEntry._ID + INTEGER_TYPE + " PRIMARY KEY," +
-                    ImagesPersistenceContract.ImageEntry.COLUMN_NAME_PATH + TEXT_TYPE + COMMA_SEP +
+                    ImagesPersistenceContract.ImageEntry.COLUMN_NAME_PATH + TEXT_TYPE + UNIQUE + COMMA_SEP +
                     ImagesPersistenceContract.ImageEntry.COLUMN_NAME_LOCALPATH + BOOLEAN_TYPE +
                     " )";
 
