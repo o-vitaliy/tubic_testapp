@@ -105,7 +105,7 @@ final public class DataSourceModule {
     @Provides
     @NonNull
     ImageCacheDataSource imageCacheDataSource(Context context) {
-        return new ImageCacheDataSourceImpl(new File(context.getExternalCacheDir(), "favorites"));
+        return new ImageCacheDataSourceImpl(new File(context.getFilesDir(), "favorites"));
     }
 
     @Singleton
