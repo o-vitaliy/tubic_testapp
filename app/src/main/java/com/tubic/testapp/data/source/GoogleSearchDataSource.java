@@ -23,7 +23,7 @@ public class GoogleSearchDataSource {
         this.cx = cx;
     }
 
-    public Observable<HashMap> search(@NonNull String query, Integer start, int limit) {
+    Observable<HashMap> search(@NonNull String query, Integer start, int limit) {
         if (start == 0)
             start = null;
         return googleSearchRemoteDataSource.search(

@@ -16,12 +16,12 @@ import com.tubic.testapp.image.ImageViewHolder;
  * Created by ovitaliy on 01.03.2017.
  */
 
-public class FavoritesAdapter extends CursorRecyclerViewAdapter<ImageViewHolder> {
+class FavoritesAdapter extends CursorRecyclerViewAdapter<ImageViewHolder> {
 
     private final RecyclerViewClickListener<Image> openImageClickListener;
     private final RecyclerViewClickListener<String> favoritesClickListener;
 
-    public FavoritesAdapter(RecyclerViewClickListener<Image> openImageClickListener, RecyclerViewClickListener<String> favoritesClickListener) {
+    FavoritesAdapter(RecyclerViewClickListener<Image> openImageClickListener, RecyclerViewClickListener<String> favoritesClickListener) {
         super(null);
         this.openImageClickListener = openImageClickListener;
         this.favoritesClickListener = favoritesClickListener;

@@ -31,14 +31,14 @@ public final class AppModule {
     @Singleton
     @Provides
     @Named("apiKey")
-    public String provideApiKey() {
+    String provideApiKey() {
         return context.getString(R.string.google_search_apikey);
     }
 
     @Singleton
     @Provides
     @Named("cx")
-    public String provideCx() {
+    String provideCx() {
         return context.getString(R.string.google_search_cx);
     }
 

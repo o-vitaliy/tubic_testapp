@@ -49,12 +49,11 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
     GoogleSearchPresenter googleSearchPresenter;
 
 
-    ImagesAdapter imagesAdapter;
-    RecyclerView recyclerView;
-    SwipeRefreshLayout swipeRefreshLayout;
-    SearchView searchView;
-    TextView emptyResultView;
-    ContentLoadingProgressBar progressBar;
+    private ImagesAdapter imagesAdapter;
+    private  RecyclerView recyclerView;
+    private  SwipeRefreshLayout swipeRefreshLayout;
+    private  TextView emptyResultView;
+    private ContentLoadingProgressBar progressBar;
 
     private BroadcastReceiver imageChangeBroadCastReceiver = new BroadcastReceiver() {
         @Override
@@ -94,7 +93,7 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
         LayoutManagerHelper.applyItemDecoration(recyclerView);
         recyclerView.setItemAnimator(null);
 
-        searchView = (SearchView) view.findViewById(R.id.google_search);
+        SearchView searchView = (SearchView) view.findViewById(R.id.google_search);
         searchView.onActionViewExpanded();
         searchView.setOnQueryTextListener(onQueryTextListener);
 

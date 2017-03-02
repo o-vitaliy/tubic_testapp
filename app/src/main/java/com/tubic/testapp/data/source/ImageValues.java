@@ -24,14 +24,7 @@ import com.tubic.testapp.data.source.local.ImagesPersistenceContract;
 
 public class ImageValues {
 
-    public static ContentValues from(Image image) {
-        ContentValues values = new ContentValues();
-        values.put(ImagesPersistenceContract.ImageEntry.COLUMN_NAME_PATH, image.getRemoteLink());
-        values.put(ImagesPersistenceContract.ImageEntry.COLUMN_NAME_LOCALPATH, image.getLocalLink());
-        return values;
-    }
-
-    public static ContentValues from(String remoteLink, String localLink) {
+        public static ContentValues from(String remoteLink, String localLink) {
         ContentValues values = new ContentValues();
         values.put(ImagesPersistenceContract.ImageEntry.COLUMN_NAME_PATH, remoteLink);
         values.put(ImagesPersistenceContract.ImageEntry.COLUMN_NAME_LOCALPATH, localLink);

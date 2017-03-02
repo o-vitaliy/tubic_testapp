@@ -2,31 +2,31 @@ package com.tubic.testapp.fb;
 
 import com.google.common.base.Strings;
 
-public class Pagination {
+class Pagination {
 
     private String after;
     private boolean loading;
 
     private boolean isFirstCall = true;
 
-    public String getAfter() {
+    String getAfter() {
         return after;
     }
 
-    public void setAfter(String after) {
+    void setAfter(String after) {
         this.after = after;
         isFirstCall = false;
     }
 
-    public boolean isLoading() {
+    boolean isLoading() {
         return loading;
     }
 
-    public void setLoading(boolean loading) {
+    void setLoading(boolean loading) {
         this.loading = loading;
     }
 
-    public boolean canLoad() {
+    boolean canLoad() {
         return isFirstCall || !Strings.isNullOrEmpty(after);
     }
 }

@@ -25,7 +25,7 @@ import static dagger.internal.Preconditions.checkNotNull;
 
 public class FavoritesPresenter extends FavoritesContract.Presenter implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    public final static int LOADER = 1;
+    private final static int LOADER = 1;
 
     private final FavoritesContract.View view;
 

@@ -43,11 +43,4 @@ public class LoaderProvider {
         );
     }
 
-    public Loader<Cursor> createTaskLoader(String path) {
-        return new CursorLoader(mContext, ImagesPersistenceContract.ImageEntry.buildTasksUri(),
-                null,
-                ImagesPersistenceContract.ImageEntry.COLUMN_NAME_PATH + " = ?",
-                new String[]{String.valueOf(path)}, null
-        );
-    }
 }

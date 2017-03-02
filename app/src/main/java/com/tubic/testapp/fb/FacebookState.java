@@ -4,7 +4,7 @@ package com.tubic.testapp.fb;
  * Created by ovitaliy on 28.02.2017.
  */
 
-public class FacebookState extends com.tubic.testapp.common.State {
+class FacebookState extends com.tubic.testapp.common.State {
 
     private static final String AFTER = "after";
 
@@ -19,14 +19,14 @@ public class FacebookState extends com.tubic.testapp.common.State {
             super(new FacebookState());
         }
 
-        public Builder setAfter(String after) {
+        Builder setAfter(String after) {
             state.put(AFTER, after);
             return this;
         }
 
     }
 
-    public String getAfter() {
+    String getAfter() {
         return (String) get(AFTER);
     }
 

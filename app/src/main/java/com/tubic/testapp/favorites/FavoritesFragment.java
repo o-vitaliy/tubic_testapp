@@ -27,11 +27,9 @@ import javax.inject.Inject;
 
 public class FavoritesFragment extends BaseFragment implements FavoritesContract.View {
 
-
     @Inject
     FavoritesPresenter favoritesPresenter;
 
-    private RecyclerView recyclerView;
     private FavoritesAdapter imagesAdapter;
     private TextView emptyResultView;
 
@@ -45,7 +43,6 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
                 .build()
                 .inject(this);
         ;
-
     }
 
     @Nullable
@@ -60,7 +57,7 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
 
         imagesAdapter = new FavoritesAdapter(viewItemClickListener, favoriteItemClickListener);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.favorites_list);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.favorites_list);
         recyclerView.setLayoutManager(LayoutManagerHelper.getLayoutManager(getContext()));
         recyclerView.setAdapter(imagesAdapter);
         recyclerView.setItemAnimator(null);

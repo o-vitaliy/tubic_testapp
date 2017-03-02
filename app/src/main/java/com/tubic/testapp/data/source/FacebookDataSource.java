@@ -26,7 +26,7 @@ public class FacebookDataSource {
     }
 
 
-    public Observable<Pair<String, List<String>>> getImages(String after, int limit) {
+    Observable<Pair<String, List<String>>> getImages(String after, int limit) {
 
         return facebookRemoteDataSource.getImages(after, limit).map(responseJsonObject -> {
             try {

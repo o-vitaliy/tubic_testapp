@@ -16,7 +16,7 @@ import rx.Subscriber;
 
 public class FacebookRemoteDataSource {
 
-    public Observable<JSONObject> getImages(String after, int limit) {
+    Observable<JSONObject> getImages(String after, int limit) {
         return Observable.create(new Observable.OnSubscribe<JSONObject>() {
             @Override
             public void call(Subscriber<? super JSONObject> subscriber) {

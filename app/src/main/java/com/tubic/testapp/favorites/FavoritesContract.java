@@ -9,7 +9,7 @@ import com.tubic.testapp.BaseView;
  * Created by ovitaliy on 01.03.2017.
  */
 
-public interface FavoritesContract {
+interface FavoritesContract {
 
     interface View extends BaseView<Presenter> {
 
