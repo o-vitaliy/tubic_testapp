@@ -30,19 +30,22 @@ public class FacebookDataSource {
 
         return facebookRemoteDataSource.getImages(after, limit).map(responseJsonObject -> {
             try {
-                JSONObject paging = responseJsonObject.getJSONObject("paging");
+                JSONObject paging = responseJsonObject.has("paging")
+                        ? responseJsonObject.getJSONObject("paging")
+                        : null;
                 String nextAfter =
-                        paging.has("next")
+                        paging != null && paging.has("next")
                                 ? paging.getJSONObject("cursors").getString("after")
                                 : null;
 
-                JSONArray imageJsonArray = responseJsonObject.getJSONArray("data");
 
                 List<String> images = new ArrayList<>(limit);
 
-                for (int i = 0; i < imageJsonArray.length(); i++)
-                    images.add(pickImage(imageJsonArray.getJSONObject(i).getJSONArray("images")));
-
+                if (responseJsonObject.has("data")) {
+                    JSONArray imageJsonArray = responseJsonObject.getJSONArray("data");
+                    for (int i = 0; i < imageJsonArray.length(); i++)
+                        images.add(pickImage(imageJsonArray.getJSONObject(i).getJSONArray("images")));
+                }
                 return new Pair<>(nextAfter, images);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
