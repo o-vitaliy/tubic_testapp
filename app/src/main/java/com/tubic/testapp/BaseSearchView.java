@@ -14,6 +14,12 @@ public interface BaseSearchView<T extends BasePresenter> extends BaseView<T> {
 
     void showSearchNoResults();
 
+    void hideSearchNoResults();
+
+    void showProgressBar();
+
+    void hideProgressBar();
+
     void showSearchResults(List<Image> images, int oldSize, int newItemsCount);
 
     void notifyItemChangedAtPosition(int position);

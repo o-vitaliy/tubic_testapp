@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tubic.testapp.R;
@@ -51,6 +53,8 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     SearchView searchView;
+    TextView emptyResultView;
+    ContentLoadingProgressBar progressBar;
 
     private BroadcastReceiver imageChangeBroadCastReceiver = new BroadcastReceiver() {
         @Override
@@ -96,6 +100,13 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.google_main);
         swipeRefreshLayout.setOnRefreshListener(() -> googleSearchPresenter.refresh());
+
+        emptyResultView = (TextView) view.findViewById(R.id.google_empty);
+
+        progressBar = (ContentLoadingProgressBar) view.findViewById(R.id.google_progress);
+
+        googleSearchPresenter.start();
+
     }
 
     private final RecyclerViewClickListener<Image> viewItemClickListener = ((value, position) -> startActivityForResult(ImageActivity.create(getContext(), position, value), REQUEST_CODE));
@@ -109,7 +120,24 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
 
     @Override
     public void showSearchNoResults() {
+        emptyResultView.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void hideSearchNoResults() {
+        emptyResultView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.show();
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.hide();
+    }
+
 
     @Override
     public void notifyRefreshingComplete() {

@@ -41,11 +41,13 @@ public class GoogleSearchRepository extends ImageRepository {
 
     private Observable<List<String>> mapGoogleRemoteResponse(Observable<HashMap> observable) {
         return observable.map(response -> {
-            List<Map> items = (List<Map>) response.get("items");
-            List<String> links = new ArrayList<>(10);
 
-            for (Map item : items) {
-                links.add(item.get("link").toString());
+            List<String> links = new ArrayList<>(10);
+            if (response != null && response.containsKey("items")) {
+                List<Map> items = (List<Map>) response.get("items");
+                for (Map item : items) {
+                    links.add(item.get("link").toString());
+                }
             }
             return links;
         });

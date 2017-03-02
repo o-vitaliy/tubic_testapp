@@ -37,6 +37,9 @@ class FacebookPresenter extends FacebookContract.Presenter {
             facebookLoggedIn();
         else
             facebookLoggedOut();
+
+        view.hideSearchNoResults();
+        view.hideProgressBar();
     }
 
     @Override
@@ -75,14 +78,19 @@ class FacebookPresenter extends FacebookContract.Presenter {
 
         pagination.setLoading(true);
 
+        view.hideSearchNoResults();
+
+        if (images.size() == 0)
+            view.showProgressBar();
+
         Subscription subscription = config(facebookRepository.getImages(pagination.getAfter()))
                 .doOnTerminate(() -> {
                     view.notifyRefreshingComplete();
                     pagination.setLoading(false);
+                    view.hideProgressBar();
                 })
                 .subscribe(
                         result -> {
-                            System.out.println(result);
                             pagination.setAfter(result.first);
                             List<Image> newImages = result.second;
                             if (images == null || images.size() + newImages.size() == 0) {

@@ -5,4 +5,6 @@
     <string name="google">Google</string>
     <string name="log_out">Log out</string>
     <string name="login_with_facebook">Log In with Facebook</string>
+    <string name="nothing_found">Sorry, nothing found</string>
+    <string name="favorites_is_empty">Nothing in the favovites</string>
 </resources>

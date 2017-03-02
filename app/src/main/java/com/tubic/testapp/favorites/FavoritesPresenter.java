@@ -57,6 +57,7 @@ public class FavoritesPresenter extends FavoritesContract.Presenter implements L
         this.data = data;
         if (data != null) {
             if (data.moveToLast()) {
+                view.hideNoResults();
                 view.showResults(data);
             } else {
                 view.showNoResults();

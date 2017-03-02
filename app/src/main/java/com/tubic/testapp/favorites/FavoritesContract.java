@@ -15,6 +15,8 @@ public interface FavoritesContract {
 
         void showNoResults();
 
+        void hideNoResults();
+
         void showResults(Cursor cursor);
 
         void notifyItemChanged(String link);

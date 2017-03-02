@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tubic.testapp.R;
@@ -51,6 +53,8 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
     private SwipeRefreshLayout swipeRefreshLayout;
     private Button loginButton;
     private ImagesAdapter imagesAdapter;
+    private TextView emptyResultView;
+    private ContentLoadingProgressBar progressBar;
 
     private boolean isLoggedIn;
 
@@ -99,6 +103,10 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.facebook_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> facebookPresenter.refresh());
 
+        emptyResultView = (TextView) view.findViewById(R.id.facebook_empty);
+
+        progressBar = (ContentLoadingProgressBar) view.findViewById(R.id.facebook_progress);
+
         facebookPresenter.start();
 
         return view;
@@ -121,6 +129,25 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void showSearchNoResults() {
+        emptyResultView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideSearchNoResults() {
+        emptyResultView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.show();
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.hide();
+    }
 
     @Override
     public void notifyRefreshingComplete() {
@@ -185,11 +212,6 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
     @Override
     public void onError(String error) {
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showSearchNoResults() {
-
     }
 
     @Override

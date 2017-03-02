@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tubic.testapp.R;
@@ -32,6 +33,7 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
 
     private RecyclerView recyclerView;
     private FavoritesAdapter imagesAdapter;
+    private TextView emptyResultView;
 
 
     @Override
@@ -63,6 +65,8 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
         recyclerView.setAdapter(imagesAdapter);
         recyclerView.setItemAnimator(null);
         LayoutManagerHelper.applyItemDecoration(recyclerView);
+
+        emptyResultView = (TextView) view.findViewById(R.id.favorite_empty);
     }
 
     private final RecyclerViewClickListener<Image> viewItemClickListener = ((value, position) -> startActivity(ImageActivity.create(getContext(), position, value)));
@@ -77,7 +81,12 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
 
     @Override
     public void showNoResults() {
+        emptyResultView.setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void hideNoResults() {
+        emptyResultView.setVisibility(View.INVISIBLE);
     }
 
     @Override

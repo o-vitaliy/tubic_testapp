@@ -35,8 +35,10 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
         this.googleSearchRepository = googleSearchRepository;
     }
 
-    @Inject
+
     protected final void start() {
+        view.hideSearchNoResults();
+        view.hideProgressBar();
     }
 
     @Override
@@ -66,14 +68,19 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
 
         pagination.setLoading(true);
 
+        view.hideSearchNoResults();
+
+        if (images.size() == 0)
+            view.showProgressBar();
+
         Subscription subscription = config(googleSearchRepository.getFavoriteImage(query, (int) pagination.getCurrentOffset()))
                 .doOnTerminate(() -> {
                     view.notifyRefreshingComplete();
+                    view.hideProgressBar();
                     pagination.setLoading(false);
                 })
                 .subscribe(
                         result -> {
-                            System.out.println(result);
                             if (result == null || images.size() + result.size() == 0) {
                                 view.showSearchNoResults();
                             } else {
@@ -161,12 +168,12 @@ class GoogleSearchPresenter extends GoogleSearchContract.Presenter {
         compositeSubscription.clear();
     }
 
-     void clear() {
-         compositeSubscription.clear();
-         pagination = new Pagination();
-         images.clear();
-         view.refresh();
-         view.notifyRefreshingComplete();
+    void clear() {
+        compositeSubscription.clear();
+        pagination = new Pagination();
+        images.clear();
+        view.refresh();
+        view.notifyRefreshingComplete();
 
     }
 }

@@ -3,6 +3,7 @@ package com.tubic.testapp.data.source;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.http.Query;
 import rx.Observable;
@@ -16,7 +17,11 @@ public class FakeGoogleSearchRemoteDataSource implements GoogleSearchRemoteDataS
 
     @Override
     public Observable<HashMap> search(@Query("q") String query, @Query("start") Integer start, @Query("num") int limit, @Query("key") String key, @Query("cx") String cx, @Query("searchType") String searchType) {
-        return Observable.just(new Gson().fromJson(RESPONSE, HashMap.class));
+        if (query.equals("empty")) {
+            return Observable.just(new HashMap()).delay(1, TimeUnit.SECONDS);
+        }
+
+        return Observable.just(new Gson().fromJson(RESPONSE, HashMap.class)).delay(1, TimeUnit.SECONDS);
     }
 
     private static final String RESPONSE = "{\n" +
