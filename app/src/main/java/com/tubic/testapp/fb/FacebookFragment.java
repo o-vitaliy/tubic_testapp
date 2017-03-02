@@ -94,6 +94,7 @@ public class FacebookFragment extends BaseFragment implements FacebookContract.V
         recyclerView.setLayoutManager(LayoutManagerHelper.getLayoutManager(getContext()));
         recyclerView.setAdapter(imagesAdapter);
         LayoutManagerHelper.applyItemDecoration(recyclerView);
+        recyclerView.setItemAnimator(null);
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.facebook_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> facebookPresenter.refresh());

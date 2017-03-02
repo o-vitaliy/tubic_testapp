@@ -39,22 +39,24 @@ public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
 
     public void setData(Image image) {
-        this.image = image;
 
-        String link = image.isFavorites()
-                ? image.getLocalLink()
-                : image.getRemoteLink();
+        if (this.image == null || !this.image.getRemoteLink().equals(image.getRemoteLink())) {
+            String link = image.isFavorites()
+                    ? image.getLocalLink()
+                    : image.getRemoteLink();
 
-        Picasso.with(itemView.getContext())
-                .load(link)
-                .resize(480, 360)
-                .centerCrop()
-                .noFade()
-                .memoryPolicy(MemoryPolicy.NO_CACHE)
-                .placeholder(R.drawable.image_progress_bar_white)
-                .into(imageView);
-
+            Picasso.with(itemView.getContext())
+                    .load(link)
+                    .resize(480, 360)
+                    .centerCrop()
+                    .noFade()
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .placeholder(R.drawable.image_progress_bar_white)
+                    .into(imageView);
+        }
         likeButton.setSelected(image.isFavorites());
+
+        this.image = image;
     }
 
     @Override

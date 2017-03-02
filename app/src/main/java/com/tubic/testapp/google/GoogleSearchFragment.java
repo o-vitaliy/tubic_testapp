@@ -88,6 +88,7 @@ public class GoogleSearchFragment extends BaseFragment implements GoogleSearchCo
         recyclerView.setLayoutManager(LayoutManagerHelper.getLayoutManager(getContext()));
         recyclerView.setAdapter(imagesAdapter);
         LayoutManagerHelper.applyItemDecoration(recyclerView);
+        recyclerView.setItemAnimator(null);
 
         searchView = (SearchView) view.findViewById(R.id.google_search);
         searchView.onActionViewExpanded();
